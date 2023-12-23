@@ -1,0 +1,9 @@
+[GENERAL]
+scan_limit 5
+consecutive_threshold 5
+completed_first_startup True
+json_output_dir relics/
+screen_width 2560
+screen_height 1440
+box_editor_dir boxes/
+

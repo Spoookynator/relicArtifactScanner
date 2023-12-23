@@ -1,0 +1,47 @@
+[SET]
+left 0
+top 0.85
+width 1
+height 0.14
+
+[SUB_STAT_NAMES]
+left 0.11
+top 0.6
+width 0.4
+height 0.3
+
+[SUB_STAT_NUMBERS]
+left 0.76
+top 0.61
+width 0.4
+height 0.28
+
+[MAIN_STAT_NAME]
+left 0.11
+top 0.53
+width 0.6
+height 0.07
+
+[SLOT]
+left 0.05
+top 0.3
+width 0.4
+height 0.07
+
+[LEVEL]
+left 0.07
+top 0.38
+width 0.2
+height 0.07
+
+[RELIC]
+left 0.72
+right 0.98
+top 0.1
+bottom 0.6
+
+[MENU]
+left 0.05
+top 0.06
+right 0.15
+bottom 0.1
