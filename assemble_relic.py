@@ -32,7 +32,7 @@ def convert_img_to_relic(INPUT_IMAGE, WHITELIST, BOUNDING_BOXES):
     filtered_sub_stat_names, error_list[1] = whitelist_check.filter_sub_stat_names(raw_sub_stat_names,
                                                                                    WHITELIST_SUB_STAT_NAMES)
     main_stat_name, error_list[2] = whitelist_check.check_main_stat_name(raw_main_stat_name, WHITELIST_MAIN_STAT_NAMES,
-                                                                         WHITELIST_POSSIBLE_PERCENT)
+                                                                         WHITELIST_POSSIBLE_PERCENT, slot_name)
     set_name, error_list[3] = whitelist_check.check_set_name(raw_set_name, WHITELIST_SET)
 
     sub_stat_numbers, error_list[4] = clean_extracted_information.clean_sub_stat_numbers(raw_sub_stat_numbers)

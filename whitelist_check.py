@@ -33,7 +33,7 @@ def filter_sub_stat_names(ocr_raw_text, whitelist_sub_stat_names):
 
 
 # this basically cleans out any trash chars as well, since the stat is getting copied from the whitelist
-def check_main_stat_name(ocr_raw_text, whitelist_main_stats, whitelist_possible_percent_in_name):
+def check_main_stat_name(ocr_raw_text, whitelist_main_stats, whitelist_possible_percent_in_name, slot_name):
 
     is_found = False
     found_name = ""
@@ -44,7 +44,7 @@ def check_main_stat_name(ocr_raw_text, whitelist_main_stats, whitelist_possible_
 
     if is_found:
 
-        if found_name in whitelist_possible_percent_in_name and not found_name.lower() in ["head", "hands"]:
+        if found_name in whitelist_possible_percent_in_name and not slot_name.lower() in ["head", "hands"]:
             found_name += "%"
         return found_name, True
     else:
