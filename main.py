@@ -1,18 +1,9 @@
-import controls
-import time
-import init
+import app
 
 
 def main():
-    init.first_time_setup()
-    BOUNDING_BOXES, WHITELIST, CONFIG = init.load_config()
-
-    if BOUNDING_BOXES is None or WHITELIST is None or CONFIG is None:
-        print("Error, extiting...")
-        time.sleep(2)
-        return -1
-
-    controls.menu(BOUNDING_BOXES, WHITELIST, CONFIG)
+    app.fist_time_startup()
+    app.init_app()
 
 
 if __name__ == '__main__':
