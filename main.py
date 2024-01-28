@@ -3,8 +3,7 @@ import app
 
 def main():
     app.fist_time_startup()
-    app.init_app()
-
+    App = app.App()
 
 if __name__ == '__main__':
     try:
