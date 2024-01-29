@@ -1,11 +1,11 @@
-def capture_relic(camera, BOUNDING_BOXES, CONFIG):
-    width = CONFIG["GENERAL"]["screen_width"]
-    height = CONFIG["GENERAL"]["screen_height"]
+def capture_relic(camera, APP_CONFIG):
+    width = APP_CONFIG["ADVANCED"]["main_screen_width"]
+    height = APP_CONFIG["ADVANCED"]["main_screen_height"]
 
-    left = round(width * BOUNDING_BOXES["left"])
-    top = round(height * BOUNDING_BOXES["top"])
-    right = round(width * BOUNDING_BOXES["right"])
-    bottom = round(height * BOUNDING_BOXES["bottom"])
+    left = round(width * APP_CONFIG['Bounding Boxeds']['relic_area'].as_float("left"))
+    top = round(height * APP_CONFIG['Bounding Boxeds']['relic_area'].as_float("top"))
+    right = round(width * APP_CONFIG['Bounding Boxeds']['relic_area'].as_float("right"))
+    bottom = round(height * APP_CONFIG['Bounding Boxeds']['relic_area'].as_float("bottom"))
 
     region = (left, top, right, bottom)
     image = camera.grab(region=region)
@@ -13,14 +13,14 @@ def capture_relic(camera, BOUNDING_BOXES, CONFIG):
     return image
 
 
-def inventory_menu(camera, BOUNDING_BOXES, CONFIG):
-    width = CONFIG["GENERAL"]["screen_width"]
-    height = CONFIG["GENERAL"]["screen_height"]
+def inventory_menu(camera, app_config):
+    width = app_config["ADVANCED"].as_int("main_screen_width")
+    height = app_config["ADVANCED"].as_int("main_screen_height")
 
-    left = round(width * BOUNDING_BOXES["left"])
-    top = round(height * BOUNDING_BOXES["top"])
-    right = round(width * BOUNDING_BOXES["right"])
-    bottom = round(height * BOUNDING_BOXES["bottom"])
+    left = round(width * app_config['Bounding Boxes']['menu_area'].as_float("left"))
+    top = round(height * app_config['Bounding Boxes']['menu_area'].as_float("top"))
+    right = round(width * app_config['Bounding Boxes']['menu_area'].as_float("right"))
+    bottom = round(height * app_config['Bounding Boxes']['menu_area'].as_float("bottom"))
 
     region = (left, top, right, bottom)
     return camera.grab(region=region)

@@ -1,5 +1,3 @@
-import os
-
 import numpy as np
 
 import box_editor
@@ -13,64 +11,47 @@ import keyboard
 from ocr_functions import get_menu
 
 
-def menu(BOUNDING_BOXES, WHITELIST, CONFIG):
-    while True:
-        print("S = Scan, E = Exit, O = Show Boxes")
-        user_input = input("Input Command\n")
-        # press 'q' to exit
-        match user_input:
-            case "E":
-                print("Exiting...")
-                time.sleep(1)
-                break
-            case "S":
-                print("Select Relic to start from")
-                time.sleep(1)
-                print("DO NOT USE MOUSE OR KEYBOARD WHILE SCAN IS IN PROGRESS")
-                time.sleep(1)
-                print("If run as administrator, you can cancel with F1")
-                time.sleep(1)
-                print("This could take a while, please be patient...")
-                time.sleep(2)
+def scan_loop(App):
 
-                scan_loop(BOUNDING_BOXES, WHITELIST, CONFIG)
-            case "O":
-                print("Focus Starrail")
-                time.sleep(1)
-                print("Generating images...")
-                box_editor.create_curent_box_imgs(BOUNDING_BOXES, CONFIG)
-                print(f"Images generated in '{CONFIG['GENERAL']['box_editor_dir']}'")
-
-
-def scan_loop(BOUNDING_BOXES, WHITELIST, CONFIG):
     camera = dxcam.create()
-    current_menu = get_menu(screenshot.inventory_menu(camera, BOUNDING_BOXES["MENU"], CONFIG))
 
+    msg_status = App.scanner_frame.main_interaction_container.stats_container.current_status.status_text
+    msg_relic_count = App.scanner_frame.main_interaction_container.stats_container.scanned_relics_label.status_text
+    msg_success_rate = App.scanner_frame.main_interaction_container.stats_container.scanned_relics_success_rate.status_text
+    msg_time_elapsed = App.scanner_frame.main_interaction_container.stats_container.scanned_relics_time_elapsed.status_text
+
+    current_menu = get_menu(screenshot.inventory_menu(camera, App.user_config))
     if current_menu != "Relics":
-        print("Error: Please navigate to the relic Screen")
+        msg_status.set('Error: Please navigate to the relic Screen')
         return
-    os.system('cls')
+
     gamepad = init_gamepad()
 
+    if not gamepad:
+        msg_status.set('Error: Gamepad couldnt be initalized')
+
     # Set the threshold for consecutive identical screenshots
-    consecutive_threshold = CONFIG["GENERAL"]["consecutive_threshold"]
-    SCAN_LIMIT = CONFIG["GENERAL"]["scan_limit"]
+    consecutive_threshold = App.user_config["ADVANCED"]["consecutive_threshold"]
+    SCAN_LIMIT = App.user_config["GENERAL"]["scan_limit"]
     index = 1
     consecutive_count = 1  # Counter for consecutive identical screenshots
     relics_without_error = 0
-    current_screenshot = screenshot.capture_relic(camera, BOUNDING_BOXES["RELIC"], CONFIG)
+    current_screenshot = screenshot.capture_relic(camera, App.user_config)
 
     relics_list = []
 
-    starting_relic, errors_found = assemble_relic.convert_img_to_relic(INPUT_IMAGE=current_screenshot, WHITELIST=WHITELIST, BOUNDING_BOXES=BOUNDING_BOXES)
+    starting_relic, errors_found = assemble_relic.convert_img_to_relic(current_screenshot,App.user_config)
     relics_list.append(starting_relic)
 
     if not errors_found:
         relics_without_error += 1
 
-    print("====Relic 1====")
-    print(f"{relics_without_error}/{index} successfully scanned ({round((relics_without_error/index),4) * 100}%)")
-    print("===============")
+
+    # Display current relic
+    msg_relic_count.set(f'{index}')
+    msg_success_rate.set(
+        f'{round((relics_without_error / index), 4) * 100}%')
+
     start_time = time.perf_counter()
 
     while consecutive_count < consecutive_threshold and index < SCAN_LIMIT:
@@ -82,7 +63,7 @@ def scan_loop(BOUNDING_BOXES, WHITELIST, CONFIG):
 
         goto_next_relic(gamepad)
 
-        new_screenshot = screenshot.capture_relic(camera, BOUNDING_BOXES["RELIC"], CONFIG)
+        new_screenshot = screenshot.capture_relic(camera, App.user_config)
 
         if new_screenshot is None:
             new_screenshot = current_screenshot
@@ -92,41 +73,37 @@ def scan_loop(BOUNDING_BOXES, WHITELIST, CONFIG):
         else:
             consecutive_count = 1
 
-        loop_relic, errors_found = assemble_relic.convert_img_to_relic(INPUT_IMAGE=new_screenshot, WHITELIST=WHITELIST, BOUNDING_BOXES=BOUNDING_BOXES)
+        loop_relic, errors_found = assemble_relic.convert_img_to_relic(new_screenshot, App.user_config)
         relics_list.append(loop_relic)
 
         if not errors_found:
             relics_without_error += 1
 
         current_time = time.perf_counter()
-        os.system('cls')
 
-        relic_header_string = f"====Relic {index}===="
-        print(relic_header_string)
-        print(f"Time elapsed: {round(current_time - start_time, 2)}s")
-        print(f"{relics_without_error}/{index} successfully scanned ({round((relics_without_error/index),4) * 100}%)")
-        relic_footer_string = len(relic_header_string) * "="
-        print(relic_footer_string)
+        # Display current relic
+        msg_status.set(f'{index}')
+        msg_status.set(f'{round((relics_without_error / index), 4) * 100}%')
+        msg_time_elapsed.set(f'{current_time}s')
 
         # Update the current screenshot for the next iteration
         current_screenshot = new_screenshot
 
     del gamepad
     if consecutive_count == consecutive_threshold:
-        print(f"The same screenshot was fed to the array {consecutive_threshold} times in a row. "
-              f"Deleting last {consecutive_threshold - 1} entries")
+        msg_status('Scan Sucessful')
         for i in range(consecutive_threshold - 1):
             relics_list.pop()
             relics_without_error -= 1
             index -= 1
 
     else:
-        print(f"Limit of {SCAN_LIMIT} reached. Stopping scan.")
+        msg_status(f"Limit of {SCAN_LIMIT} reached. Stopping scan.")
 
     end_time = time.perf_counter()
 
-    print(f"Scanned {len(relics_list)} relics in {round((end_time-start_time), 2)}s. Success rate: {relics_without_error}/{index} ({round((relics_without_error/index),4) * 100}%)")
-    directory = CONFIG["GENERAL"]["json_output_dir"]
+    msg_time_elapsed(f'{end_time}s')
+    directory = App.user_config["GENERAL"]["relic_output_dir"]
 
     assemble_relic.write_relics_to_file(relics_list, directory)
 

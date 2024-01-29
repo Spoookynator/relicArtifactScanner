@@ -9,24 +9,24 @@ import time
 import re
 
 
-def convert_img_to_relic(INPUT_IMAGE, WHITELIST, BOUNDING_BOXES):
+def convert_img_to_relic(INPUT_IMAGE, APP_CONFIG):
     # is true when there is no error
     error_list = [None] * 9
     # the whitelists used to filter out relic sets and stats
-    WHITELIST_MAIN_STAT_NAMES = WHITELIST["MAIN_STAT_NAMES"]
-    WHITELIST_POSSIBLE_PERCENT = WHITELIST["POSSIBLE_PERCENT"]
-    WHITELIST_SET = WHITELIST["SETS"]
-    WHITELIST_SLOT = WHITELIST["SLOTS"]
-    WHITELIST_SUB_STAT_NAMES = WHITELIST["SUB_STAT_NAMES"]
+    WHITELIST_MAIN_STAT_NAMES = APP_CONFIG['Whitelist']["relic_main_stat_names"]
+    WHITELIST_POSSIBLE_PERCENT = APP_CONFIG['Whitelist']["possible_percent"]
+    WHITELIST_SET = APP_CONFIG['Whitelist']["relic_sets"]
+    WHITELIST_SLOT = APP_CONFIG['Whitelist']["relic_slots"]
+    WHITELIST_SUB_STAT_NAMES = APP_CONFIG['Whitelist']["sub_stat_names"]
 
     # uses ocr on the image, to get all the differenct relic parts into variables
     # bounding boxes are used to only analyze a certain part of the image
-    raw_sub_stat_numbers = ocr_functions.get_sub_stats_numbers(INPUT_IMAGE, BOUNDING_BOXES["SUB_STAT_NUMBERS"])
-    raw_sub_stat_names = ocr_functions.get_sub_stats_names(INPUT_IMAGE, BOUNDING_BOXES["SUB_STAT_NAMES"])
-    raw_main_stat_name = ocr_functions.get_main_stat_name(INPUT_IMAGE, BOUNDING_BOXES["MAIN_STAT_NAME"])
-    raw_set_name = ocr_functions.get_set_name(INPUT_IMAGE, BOUNDING_BOXES["SET"])
-    raw_slot_name = ocr_functions.get_slot_name(INPUT_IMAGE, BOUNDING_BOXES["SLOT"])
-    raw_level = ocr_functions.get_level(INPUT_IMAGE, BOUNDING_BOXES["LEVEL"])
+    raw_sub_stat_numbers = ocr_functions.get_sub_stats_numbers(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["sub_stat_numbers"])
+    raw_sub_stat_names = ocr_functions.get_sub_stats_names(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["sub_stat_names"])
+    raw_main_stat_name = ocr_functions.get_main_stat_name(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["relic_main_stat_name"])
+    raw_set_name = ocr_functions.get_set_name(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["relic_set"])
+    raw_slot_name = ocr_functions.get_slot_name(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["relic_slot"])
+    raw_level = ocr_functions.get_level(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["relic_level"])
 
     slot_name, error_list[0] = whitelist_check.filter_slot_names(raw_slot_name, WHITELIST_SLOT)
     filtered_sub_stat_names, error_list[1] = whitelist_check.filter_sub_stat_names(raw_sub_stat_names,
