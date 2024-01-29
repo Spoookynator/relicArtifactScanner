@@ -5,7 +5,7 @@ a = Analysis(
     ['main.py'],
     pathex=[],
     binaries=[],
-    datas=[('config', 'config'), ('venv/Lib/site-packages/dxcam', 'dxcam'), ('venv/Lib/site-packages/pytesseract', 'pytesseract'), ('venv/Lib/site-packages/vgamepad', 'vgamepad')],
+    datas=[('config', 'config'), ('venv/Lib/site-packages/dxcam', 'dxcam'), ('venv/Lib/site-packages/pytesseract', 'pytesseract'), ('venv/Lib/site-packages/vgamepad', 'vgamepad'), ('venv/Lib/site-packages/customtkinter', 'customtkinter')],
     hiddenimports=['dxcam'],
     hookspath=[],
     hooksconfig={},

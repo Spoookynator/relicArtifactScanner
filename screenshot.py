@@ -1,6 +1,6 @@
 def capture_relic(camera, APP_CONFIG):
-    width = APP_CONFIG["ADVANCED"]["main_screen_width"]
-    height = APP_CONFIG["ADVANCED"]["main_screen_height"]
+    width = APP_CONFIG["ADVANCED"].as_int("main_screen_width")
+    height = APP_CONFIG["ADVANCED"].as_int("main_screen_height")
 
     left = round(width * APP_CONFIG['Bounding Boxes']['relic_area'].as_float("left"))
     top = round(height * APP_CONFIG['Bounding Boxes']['relic_area'].as_float("top"))

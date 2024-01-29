@@ -16,7 +16,7 @@ def convert_img_to_relic(INPUT_IMAGE, APP_CONFIG):
     WHITELIST_MAIN_STAT_NAMES = APP_CONFIG['Whitelist']["relic_main_stat_names"]
     WHITELIST_POSSIBLE_PERCENT = APP_CONFIG['Whitelist']["possible_percent"]
     WHITELIST_SET = APP_CONFIG['Whitelist']["relic_sets"]
-    WHITELIST_SLOT = APP_CONFIG['Whitelist']["relic_slots"]
+    WHITELIST_SLOT = APP_CONFIG['Whitelist']["slots"]
     WHITELIST_SUB_STAT_NAMES = APP_CONFIG['Whitelist']["sub_stat_names"]
 
     # uses ocr on the image, to get all the differenct relic parts into variables
@@ -92,7 +92,7 @@ def to_snake_case(input_string):
     return lower_string
 
 
-def write_relics_to_file(relics_list, directory):
+def write_relics_to_file(relics_list, directory, msg_status):
     try:
         start = time.time()
         relics_list_json = json.dumps(relics_list, indent=4)
@@ -108,7 +108,7 @@ def write_relics_to_file(relics_list, directory):
             f.write(relics_list_json)
         end = time.time()
 
-        print(f"Successfully saved {len(relics_list)} relics to file in {round(end - start, 5)}ms")
+        msg_status.set(f'Saved {len(relics_list)} relics to\n "{path}"')
     except Exception as e:
-        print("Failed to write relics to file.")
+        msg_status.set("Failed to write relics to file.")
         print(f"Error: {format(e)}")

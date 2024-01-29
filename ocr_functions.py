@@ -4,11 +4,11 @@ import pytesseract
 def get_set_name(INPUT_IMAGE, BOUNDING_BOXES):
     height, width, channels = INPUT_IMAGE.shape
 
-    x = round(width * BOUNDING_BOXES["left"])
-    y = round(height * BOUNDING_BOXES["top"])
+    x = round(width * BOUNDING_BOXES.as_float("left"))
+    y = round(height * BOUNDING_BOXES.as_float("top"))
 
-    w = round(width * BOUNDING_BOXES["width"])
-    h = round(height * BOUNDING_BOXES["height"])
+    w = round(width * BOUNDING_BOXES.as_float("width"))
+    h = round(height * BOUNDING_BOXES.as_float("height"))
 
     crop_img = INPUT_IMAGE[y:y + h, x:x + w]
 
@@ -20,11 +20,11 @@ def get_set_name(INPUT_IMAGE, BOUNDING_BOXES):
 def get_sub_stats_names(INPUT_IMAGE, BOUNDING_BOXES):
     height, width, channels = INPUT_IMAGE.shape
 
-    x = round(width * BOUNDING_BOXES["left"])
-    y = round(height * BOUNDING_BOXES["top"])
+    x = round(width * BOUNDING_BOXES.as_float("left"))
+    y = round(height * BOUNDING_BOXES.as_float("top"))
 
-    w = round(width * BOUNDING_BOXES["width"])
-    h = round(height * BOUNDING_BOXES["height"])
+    w = round(width * BOUNDING_BOXES.as_float("width"))
+    h = round(height * BOUNDING_BOXES.as_float("height"))
 
     crop_img = INPUT_IMAGE[y:y + h, x:x + w]
 
@@ -39,11 +39,11 @@ def get_sub_stats_names(INPUT_IMAGE, BOUNDING_BOXES):
 def get_sub_stats_numbers(INPUT_IMAGE, BOUNDING_BOXES):
     height, width, channels = INPUT_IMAGE.shape
 
-    x = round(width * BOUNDING_BOXES["left"])
-    y = round(height * BOUNDING_BOXES["top"])
+    x = round(width * BOUNDING_BOXES.as_float("left"))
+    y = round(height * BOUNDING_BOXES.as_float("top"))
 
-    w = round(width * BOUNDING_BOXES["width"])
-    h = round(height * BOUNDING_BOXES["height"])
+    w = round(width * BOUNDING_BOXES.as_float("width"))
+    h = round(height * BOUNDING_BOXES.as_float("height"))
 
     crop_img = INPUT_IMAGE[y:y + h, x:x + w]
 
@@ -58,11 +58,11 @@ def get_sub_stats_numbers(INPUT_IMAGE, BOUNDING_BOXES):
 def get_main_stat_name(INPUT_IMAGE, BOUNDING_BOXES):
     height, width, channels = INPUT_IMAGE.shape
 
-    x = round(width * BOUNDING_BOXES["left"])
-    y = round(height * BOUNDING_BOXES["top"])
+    x = round(width * BOUNDING_BOXES.as_float("left"))
+    y = round(height * BOUNDING_BOXES.as_float("top"))
 
-    w = round(width * BOUNDING_BOXES["width"])
-    h = round(height * BOUNDING_BOXES["height"])
+    w = round(width * BOUNDING_BOXES.as_float("width"))
+    h = round(height * BOUNDING_BOXES.as_float("height"))
 
     crop_img = INPUT_IMAGE[y:y + h, x:x + w]
 
@@ -82,12 +82,11 @@ def get_main_stat_name(INPUT_IMAGE, BOUNDING_BOXES):
 def get_main_stat_number(INPUT_IMAGE, BOUNDING_BOXES):
     height, width, channels = INPUT_IMAGE.shape
 
-    x = round(width * BOUNDING_BOXES["left"])
-    y = round(height * BOUNDING_BOXES["top"])
+    x = round(width * BOUNDING_BOXES.as_float("left"))
+    y = round(height * BOUNDING_BOXES.as_float("top"))
 
-    w = round(width * BOUNDING_BOXES["width"])
-    h = round(height * BOUNDING_BOXES["height"])
-
+    w = round(width * BOUNDING_BOXES.as_float("width"))
+    h = round(height * BOUNDING_BOXES.as_float("height"))
     crop_img = INPUT_IMAGE[y:y + h, x:x + w]
 
     # this just whitelists all numbers/symbols that could be in the number
@@ -104,11 +103,11 @@ def get_main_stat_number(INPUT_IMAGE, BOUNDING_BOXES):
 def get_slot_name(INPUT_IMAGE, BOUNDING_BOXES):
     height, width, channels = INPUT_IMAGE.shape
 
-    x = round(width * BOUNDING_BOXES["left"])
-    y = round(height * BOUNDING_BOXES["top"])
+    x = round(width * BOUNDING_BOXES.as_float("left"))
+    y = round(height * BOUNDING_BOXES.as_float("top"))
 
-    w = round(width * BOUNDING_BOXES["width"])
-    h = round(height * BOUNDING_BOXES["height"])
+    w = round(width * BOUNDING_BOXES.as_float("width"))
+    h = round(height * BOUNDING_BOXES.as_float("height"))
 
     crop_img = INPUT_IMAGE[y:y + h, x:x + w]
 
@@ -127,11 +126,11 @@ def get_slot_name(INPUT_IMAGE, BOUNDING_BOXES):
 def get_level(INPUT_IMAGE, BOUNDING_BOXES):
     height, width, channels = INPUT_IMAGE.shape
 
-    x = round(width * BOUNDING_BOXES["left"])
-    y = round(height * BOUNDING_BOXES["top"])
+    x = round(width * BOUNDING_BOXES.as_float("left"))
+    y = round(height * BOUNDING_BOXES.as_float("top"))
 
-    w = round(width * BOUNDING_BOXES["width"])
-    h = round(height * BOUNDING_BOXES["height"])
+    w = round(width * BOUNDING_BOXES.as_float("width"))
+    h = round(height * BOUNDING_BOXES.as_float("height"))
 
     crop_img = INPUT_IMAGE[y:y + h, x:x + w]
 
