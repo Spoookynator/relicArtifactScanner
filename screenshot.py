@@ -2,10 +2,10 @@ def capture_relic(camera, APP_CONFIG):
     width = APP_CONFIG["ADVANCED"]["main_screen_width"]
     height = APP_CONFIG["ADVANCED"]["main_screen_height"]
 
-    left = round(width * APP_CONFIG['Bounding Boxeds']['relic_area'].as_float("left"))
-    top = round(height * APP_CONFIG['Bounding Boxeds']['relic_area'].as_float("top"))
-    right = round(width * APP_CONFIG['Bounding Boxeds']['relic_area'].as_float("right"))
-    bottom = round(height * APP_CONFIG['Bounding Boxeds']['relic_area'].as_float("bottom"))
+    left = round(width * APP_CONFIG['Bounding Boxes']['relic_area'].as_float("left"))
+    top = round(height * APP_CONFIG['Bounding Boxes']['relic_area'].as_float("top"))
+    right = round(width * APP_CONFIG['Bounding Boxes']['relic_area'].as_float("right"))
+    bottom = round(height * APP_CONFIG['Bounding Boxes']['relic_area'].as_float("bottom"))
 
     region = (left, top, right, bottom)
     image = camera.grab(region=region)

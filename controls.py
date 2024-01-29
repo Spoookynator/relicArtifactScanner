@@ -30,6 +30,12 @@ def scan_loop(App):
     if not gamepad:
         msg_status.set('Error: Gamepad couldnt be initalized')
 
+    msg_status.set('Please focus Starrail')
+    time.sleep(3)
+    for i in range(5):
+        msg_status.set(f'Starting in {5-i}')
+        time.sleep(1)
+
     # Set the threshold for consecutive identical screenshots
     consecutive_threshold = App.user_config["ADVANCED"]["consecutive_threshold"]
     SCAN_LIMIT = App.user_config["GENERAL"]["scan_limit"]
