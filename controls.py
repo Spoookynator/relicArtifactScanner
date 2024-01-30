@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 
 import box_editor
@@ -16,8 +18,9 @@ def start_scan_loop_thread(App):
     t = Thread(target=lambda: scan_loop(App), daemon=True)
     t.start()
 
-def scan_loop(App):
 
+def scan_loop(App):
+    App.scanner_frame.main_interaction_container.start_scan_button.configure(state='disabled')
     camera = dxcam.create()
 
     msg_status = App.scanner_frame.main_interaction_container.stats_container.current_status.status_text
@@ -28,11 +31,14 @@ def scan_loop(App):
     current_menu = get_menu(screenshot.inventory_menu(camera, App.user_config))
     if current_menu != "Relics":
         msg_status.set('Error: Please navigate to the relic Screen')
+        App.scanner_frame.main_interaction_container.start_scan_button.configure(state='default')
+
         return
     msg_status.set('Initializing Gamepad...')
     gamepad = init_gamepad()
     if not gamepad:
         msg_status.set('Error: Gamepad couldnt be initalized')
+        App.scanner_frame.main_interaction_container.start_scan_button.configure(state='default')
 
     msg_status.set('Done!')
     time.sleep(0.1)
@@ -40,7 +46,7 @@ def scan_loop(App):
     msg_status.set('Please focus Starrail')
     time.sleep(1)
 
-    i = 5
+    i = 3
     while i >= 0:
         msg_status.set(f'Starting in {i}')
         time.sleep(1)
@@ -60,13 +66,11 @@ def scan_loop(App):
     relics_list = []
 
     msg_status.set('Extract Data...')
-    starting_relic, errors_found = assemble_relic.convert_img_to_relic(current_screenshot,App.user_config)
+    starting_relic, errors_found = assemble_relic.convert_img_to_relic(current_screenshot, App.user_config)
     relics_list.append(starting_relic)
-
 
     if not errors_found:
         relics_without_error += 1
-
 
     # Display current relic
     msg_relic_count.set(f'{index}')
@@ -107,7 +111,14 @@ def scan_loop(App):
         # Display current relic
         msg_relic_count.set(f'{index}')
         msg_success_rate.set(f'{round((relics_without_error / index), 4) * 100}%')
-        msg_time_elapsed.set(f'{round(current_time-start_time, 2)}s')
+
+        timer_string = f'{math.floor((current_time - start_time) / 60)}:'
+
+        if (round((current_time - start_time) % 60)) < 10:
+            timer_string += '0'
+
+        timer_string += f'{round((current_time - start_time) % 60)}'
+        msg_time_elapsed.set(timer_string)
 
         # Update the current screenshot for the next iteration
         current_screenshot = new_screenshot
@@ -123,12 +134,14 @@ def scan_loop(App):
     else:
         msg_status.set(f"Limit of {SCAN_LIMIT} reached. Stopping scan.")
 
+    msg_relic_count.set(f'{index - consecutive_threshold}')
     end_time = time.perf_counter()
 
     msg_time_elapsed.set(f'{round(end_time - start_time, 2)}s')
     directory = App.user_config["GENERAL"]["relic_output_dir"]
 
     assemble_relic.write_relics_to_file(relics_list, directory, msg_status)
+    App.scanner_frame.main_interaction_container.start_scan_button.configure(state='default')
 
 
 def init_gamepad():

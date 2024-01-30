@@ -1,8 +1,12 @@
+import time
 
 import app
 from controls import start_scan_loop_thread
+
+
 def testerer():
     print('test')
+
 
 def main():
     app.fist_time_startup()

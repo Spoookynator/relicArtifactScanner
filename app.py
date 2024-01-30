@@ -1,12 +1,14 @@
+import sys
 import tkinter
 import customtkinter
 import configobj
 import os
-from controls import scan_loop
+
 
 def fist_time_startup():
     if not os.path.isfile('config.ini'):
         initalize_config_values()
+        sys.exit()
 
 
 def initalize_config_values():
@@ -133,6 +135,7 @@ class MainInteractionContainer(customtkinter.CTkFrame):
 
         self.start_scan_button = customtkinter.CTkButton(self, text='Scan Relics', font=('', 50), corner_radius=10)
         self.start_scan_button.grid(row=1, column=1, sticky='nsew')
+        self.start_scan_button.grid_propagate(False)
 
 
 class StatsContainer(customtkinter.CTkFrame):
