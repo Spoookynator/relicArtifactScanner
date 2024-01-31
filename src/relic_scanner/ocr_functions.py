@@ -1,143 +1,28 @@
 import pytesseract
 
 
-def get_set_name(INPUT_IMAGE, BOUNDING_BOXES):
-    height, width, channels = INPUT_IMAGE.shape
+def relic_img_to_string(input_img, bounding_box, tesseract_config='', tesseract_config_2='', double_check=False):
+    height, width, channels = input_img.shape
+    x, y, w, h = get_box_values(width, height, bounding_box)
 
-    x = round(width * BOUNDING_BOXES.as_float("left"))
-    y = round(height * BOUNDING_BOXES.as_float("top"))
+    crop_img = input_img[y:y + h, x:x + w]
+    img_string = pytesseract.image_to_string(crop_img, config=tesseract_config)
 
-    w = round(width * BOUNDING_BOXES.as_float("width"))
-    h = round(height * BOUNDING_BOXES.as_float("height"))
-
-    crop_img = INPUT_IMAGE[y:y + h, x:x + w]
-
-    img_string = pytesseract.image_to_string(crop_img)
+    if double_check:
+        img_string2 = pytesseract.image_to_string(crop_img, config=tesseract_config_2)
+        return img_string2 + img_string
 
     return img_string
 
 
-def get_sub_stats_names(INPUT_IMAGE, BOUNDING_BOXES):
-    height, width, channels = INPUT_IMAGE.shape
+def get_box_values(width, height, bounding_box):
+    x = round(width * bounding_box.as_float("left"))
+    y = round(height * bounding_box.as_float("top"))
 
-    x = round(width * BOUNDING_BOXES.as_float("left"))
-    y = round(height * BOUNDING_BOXES.as_float("top"))
+    w = round(width * bounding_box.as_float("width"))
+    h = round(height * bounding_box.as_float("height"))
 
-    w = round(width * BOUNDING_BOXES.as_float("width"))
-    h = round(height * BOUNDING_BOXES.as_float("height"))
-
-    crop_img = INPUT_IMAGE[y:y + h, x:x + w]
-
-    img_string = pytesseract.image_to_string(crop_img, config="--psm 12")
-
-    # print(img_string)
-    # cv2.imshow('testo', crop_img)
-    # cv2.waitKey(0)
-    return img_string
-
-
-def get_sub_stats_numbers(INPUT_IMAGE, BOUNDING_BOXES):
-    height, width, channels = INPUT_IMAGE.shape
-
-    x = round(width * BOUNDING_BOXES.as_float("left"))
-    y = round(height * BOUNDING_BOXES.as_float("top"))
-
-    w = round(width * BOUNDING_BOXES.as_float("width"))
-    h = round(height * BOUNDING_BOXES.as_float("height"))
-
-    crop_img = INPUT_IMAGE[y:y + h, x:x + w]
-
-    img_string = pytesseract.image_to_string(crop_img, config="--psm 6")
-
-    # print(img_string)
-    # cv2.imshow('testo', crop_img)
-    # cv2.waitKey(0)
-    return img_string
-
-
-def get_main_stat_name(INPUT_IMAGE, BOUNDING_BOXES):
-    height, width, channels = INPUT_IMAGE.shape
-
-    x = round(width * BOUNDING_BOXES.as_float("left"))
-    y = round(height * BOUNDING_BOXES.as_float("top"))
-
-    w = round(width * BOUNDING_BOXES.as_float("width"))
-    h = round(height * BOUNDING_BOXES.as_float("height"))
-
-    crop_img = INPUT_IMAGE[y:y + h, x:x + w]
-
-    # two different images, since DEF got ignored by the first one (was too short)
-    # so the second one checks for all the smaller words (gets checked later anyway, so trash can go in)
-    img_string = pytesseract.image_to_string(crop_img, config="--psm 7")
-    img_string2 = pytesseract.image_to_string(crop_img, config="--psm 8")
-
-    full_img_string = img_string2 + img_string
-
-    # cv2.imshow('testo', crop_img)
-    # cv2.waitKey(0)
-    return full_img_string
-
-
-# noinspection SpellCheckingInspection
-def get_main_stat_number(INPUT_IMAGE, BOUNDING_BOXES):
-    height, width, channels = INPUT_IMAGE.shape
-
-    x = round(width * BOUNDING_BOXES.as_float("left"))
-    y = round(height * BOUNDING_BOXES.as_float("top"))
-
-    w = round(width * BOUNDING_BOXES.as_float("width"))
-    h = round(height * BOUNDING_BOXES.as_float("height"))
-    crop_img = INPUT_IMAGE[y:y + h, x:x + w]
-
-    # this just whitelists all numbers/symbols that could be in the number
-    img_string = pytesseract.image_to_string(crop_img, config="tessedit_char_whitelist=0123456789%.")
-
-    # print(img_string)
-    # print("-----")
-
-    # cv2.imshow('testo', crop_img)
-    # cv2.waitKey(0)
-    return img_string
-
-
-def get_slot_name(INPUT_IMAGE, BOUNDING_BOXES):
-    height, width, channels = INPUT_IMAGE.shape
-
-    x = round(width * BOUNDING_BOXES.as_float("left"))
-    y = round(height * BOUNDING_BOXES.as_float("top"))
-
-    w = round(width * BOUNDING_BOXES.as_float("width"))
-    h = round(height * BOUNDING_BOXES.as_float("height"))
-
-    crop_img = INPUT_IMAGE[y:y + h, x:x + w]
-
-    # this just whitelists all numbers/symbols that could be in the number
-    img_string = pytesseract.image_to_string(crop_img)
-
-    # print(img_string)
-    # print("-----")
-    #
-    # cv2.imshow('testo', crop_img)
-    # cv2.waitKey(0)
-    return img_string
-
-
-# noinspection SpellCheckingInspection
-def get_level(INPUT_IMAGE, BOUNDING_BOXES):
-    height, width, channels = INPUT_IMAGE.shape
-
-    x = round(width * BOUNDING_BOXES.as_float("left"))
-    y = round(height * BOUNDING_BOXES.as_float("top"))
-
-    w = round(width * BOUNDING_BOXES.as_float("width"))
-    h = round(height * BOUNDING_BOXES.as_float("height"))
-
-    crop_img = INPUT_IMAGE[y:y + h, x:x + w]
-
-    # this just whitelists all numbers/symbols that could be in the number
-    img_string = pytesseract.image_to_string(crop_img, config="tessedit_char_whitelist=0123456789 --psm 12")
-
-    return img_string
+    return x, y, w, h
 
 
 def get_menu(INPUT_IMAGE):

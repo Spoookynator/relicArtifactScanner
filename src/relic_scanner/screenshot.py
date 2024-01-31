@@ -1,6 +1,6 @@
 def capure_screenshot(camera, app_config, area_name):
-    width = app_config["ADVANCED"].as_int("main_screen_width")
-    height = app_config["ADVANCED"].as_int("main_screen_height")
+    width = app_config["GENERAL"].as_int("main_screen_width")
+    height = app_config["GENERAL"].as_int("main_screen_height")
 
     left = round(width * app_config['Bounding Boxes'][area_name].as_float("left"))
     top = round(height * app_config['Bounding Boxes'][area_name].as_float("top"))

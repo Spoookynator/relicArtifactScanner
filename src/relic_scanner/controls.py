@@ -52,7 +52,7 @@ def scan_loop(App):
         i -= 1
 
     # Set the threshold for consecutive identical screenshots
-    consecutive_threshold = App.user_config["ADVANCED"].as_int("consecutive_threshold")
+    consecutive_threshold = App.user_config["GENERAL"].as_int("consecutive_threshold")
     SCAN_LIMIT = App.user_config["GENERAL"].as_int("scan_limit")
     index = 1
     consecutive_count = 1  # Counter for consecutive identical screenshots

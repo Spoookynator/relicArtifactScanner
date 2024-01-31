@@ -21,18 +21,48 @@ def convert_img_to_relic(INPUT_IMAGE, APP_CONFIG):
 
     # uses ocr on the image, to get all the differenct relic parts into variables
     # bounding boxes are used to only analyze a certain part of the image
-    raw_sub_stat_numbers = ocr_functions.get_sub_stats_numbers(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["sub_stat_numbers"])
-    raw_sub_stat_names = ocr_functions.get_sub_stats_names(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["sub_stat_names"])
-    raw_main_stat_name = ocr_functions.get_main_stat_name(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["relic_main_stat_name"])
-    raw_set_name = ocr_functions.get_set_name(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["relic_set"])
-    raw_slot_name = ocr_functions.get_slot_name(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["relic_slot"])
-    raw_level = ocr_functions.get_level(INPUT_IMAGE, APP_CONFIG['Bounding Boxes']["relic_level"])
+    relic_sub_stat_num_config = APP_CONFIG['Bounding Boxes']["sub_stat_numbers"]
+    relic_sub_stat_name_config = APP_CONFIG['Bounding Boxes']["sub_stat_names"]
+    relic_main_stat_name_config = APP_CONFIG['Bounding Boxes']["relic_main_stat_name"]
+    relic_level_config = APP_CONFIG['Bounding Boxes']["relic_level"]
+    relic_set_name_config = APP_CONFIG['Bounding Boxes']["relic_set"]
+    relic_slot_name_config = APP_CONFIG['Bounding Boxes']["relic_slot"]
 
-    slot_name, error_list[0] = whitelist_check.filter_slot_names(raw_slot_name, WHITELIST_SLOT)
+    relic_sub_stat_num_tesseract = APP_CONFIG['Tesseract']['relic_sub_stat_num']
+    relic_sub_stat_name_tesseract = APP_CONFIG['Tesseract']['relic_sub_stat_name']
+    relic_main_stat_name_1_tesseract = APP_CONFIG['Tesseract']['relic_main_stat_name_1']
+    relic_main_stat_name_2_tesseract = APP_CONFIG['Tesseract']['relic_main_stat_name_2']
+    relic_level_tesseract = APP_CONFIG['Tesseract']['relic_level']
+    relic_set_name_tesseract = APP_CONFIG['Tesseract']['relic_set_name']
+    relic_slot_name_tesseract = APP_CONFIG['Tesseract']['relic_slot_name']
+
+    raw_sub_stat_numbers = ocr_functions.relic_img_to_string(INPUT_IMAGE,
+                                                             relic_sub_stat_num_config,
+                                                             relic_sub_stat_num_tesseract)
+    raw_sub_stat_names = ocr_functions.relic_img_to_string(INPUT_IMAGE,
+                                                           relic_sub_stat_name_config,
+                                                           relic_sub_stat_name_tesseract
+                                                           )
+    raw_main_stat_name = ocr_functions.relic_img_to_string(INPUT_IMAGE,
+                                                           relic_main_stat_name_config,
+                                                           relic_main_stat_name_1_tesseract,
+                                                           relic_main_stat_name_2_tesseract,
+                                                           True
+                                                           )
+    raw_set_name = ocr_functions.relic_img_to_string(INPUT_IMAGE, relic_set_name_config, relic_set_name_tesseract)
+    raw_slot_name = ocr_functions.relic_img_to_string(INPUT_IMAGE, relic_slot_name_config, relic_slot_name_tesseract)
+    raw_level = ocr_functions.relic_img_to_string(INPUT_IMAGE, relic_level_config, relic_level_tesseract)
+
+    slot_name, error_list[0] = whitelist_check.filter_slot_names(raw_slot_name,
+                                                                 WHITELIST_SLOT)
     filtered_sub_stat_names, error_list[1] = whitelist_check.filter_sub_stat_names(raw_sub_stat_names,
-                                                                                   WHITELIST_SUB_STAT_NAMES)
-    main_stat_name, error_list[2] = whitelist_check.check_main_stat_name(raw_main_stat_name, WHITELIST_MAIN_STAT_NAMES,
-                                                                         WHITELIST_POSSIBLE_PERCENT, slot_name)
+                                                                                   WHITELIST_SUB_STAT_NAMES
+                                                                                   )
+    main_stat_name, error_list[2] = whitelist_check.check_main_stat_name(raw_main_stat_name,
+                                                                         WHITELIST_MAIN_STAT_NAMES,
+                                                                         WHITELIST_POSSIBLE_PERCENT,
+                                                                         slot_name
+                                                                         )
     set_name, error_list[3] = whitelist_check.check_set_name(raw_set_name, WHITELIST_SET)
 
     sub_stat_numbers, error_list[4] = clean_extracted_information.clean_sub_stat_numbers(raw_sub_stat_numbers)
@@ -40,7 +70,8 @@ def convert_img_to_relic(INPUT_IMAGE, APP_CONFIG):
     level, error_list[5] = clean_extracted_information.clean_level(raw_level)
     sub_stats_complete, error_list[6] = clean_extracted_information.sub_stats_flat_or_percent(filtered_sub_stat_names,
                                                                                               sub_stat_numbers,
-                                                                                              WHITELIST_POSSIBLE_PERCENT)
+                                                                                              WHITELIST_POSSIBLE_PERCENT
+                                                                                              )
     sub_stat_object_list = []
 
     try:
@@ -52,7 +83,8 @@ def convert_img_to_relic(INPUT_IMAGE, APP_CONFIG):
     except Exception as e:
         error_list[7] = e
 
-    final_relic = {"MainStat": main_stat_name, "Set": set_name, "Slot": slot_name, "Level": level, "SubStats": sub_stat_object_list}
+    final_relic = {"MainStat": main_stat_name, "Set": set_name, "Slot": slot_name, "Level": level,
+                   "SubStats": sub_stat_object_list}
 
     true_final_relic, error_list[8] = convert_to_right_case(final_relic)
 
