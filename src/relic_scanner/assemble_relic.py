@@ -39,8 +39,8 @@ def convert_img_to_relic(INPUT_IMAGE, APP_CONFIG):
 
     level, error_list[5] = clean_extracted_information.clean_level(raw_level)
     sub_stats_complete, error_list[6] = clean_extracted_information.sub_stats_flat_or_percent(filtered_sub_stat_names,
-                                                                                          sub_stat_numbers,
-                                                                                          WHITELIST_POSSIBLE_PERCENT)
+                                                                                              sub_stat_numbers,
+                                                                                              WHITELIST_POSSIBLE_PERCENT)
     sub_stat_object_list = []
 
     try:

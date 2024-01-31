@@ -1,7 +1,5 @@
-import time
-
 import app
-from controls import start_scan_loop_thread
+from src.relic_scanner.controls import start_scan_loop_thread
 
 
 def testerer():

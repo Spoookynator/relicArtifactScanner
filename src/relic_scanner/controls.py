@@ -2,7 +2,6 @@ import math
 
 import numpy as np
 
-import box_editor
 import screenshot
 import dxcam
 import vgamepad as vg
@@ -28,7 +27,7 @@ def scan_loop(App):
     msg_success_rate = App.scanner_frame.main_interaction_container.stats_container.scanned_relics_success_rate.status_text
     msg_time_elapsed = App.scanner_frame.main_interaction_container.stats_container.scanned_relics_time_elapsed.status_text
 
-    current_menu = get_menu(screenshot.inventory_menu(camera, App.user_config))
+    current_menu = get_menu(screenshot.capure_screenshot(camera, App.user_config, 'menu_area'))
     if current_menu != "Relics":
         msg_status.set('Error: Please navigate to the relic Screen')
         App.scanner_frame.main_interaction_container.start_scan_button.configure(state='default')
@@ -61,7 +60,7 @@ def scan_loop(App):
 
     msg_status.set('Taking Screenshot...')
 
-    current_screenshot = screenshot.capture_relic(camera, App.user_config)
+    current_screenshot = screenshot.capure_screenshot(camera, App.user_config, 'relic_area')
 
     relics_list = []
 
@@ -89,7 +88,7 @@ def scan_loop(App):
         goto_next_relic(gamepad)
 
         msg_status.set('Taking Screenshot...')
-        new_screenshot = screenshot.capture_relic(camera, App.user_config)
+        new_screenshot = screenshot.capure_screenshot(camera, App.user_config, 'relic_area')
 
         if new_screenshot is None:
             new_screenshot = current_screenshot

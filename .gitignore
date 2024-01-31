@@ -15,4 +15,4 @@ gen
 /relics
 
 # files
-/config.ini
+/src/config.ini
