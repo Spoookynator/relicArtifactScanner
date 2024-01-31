@@ -2,14 +2,14 @@ import math
 
 import numpy as np
 
-import screenshot
+import src.relic_scanner.screenshot as screenshot
 import dxcam
 import vgamepad as vg
 import time
-import assemble_relic
+import src.relic_scanner.assemble_relic as assemble_relic
 
 import keyboard
-from ocr_functions import get_menu
+from src.relic_scanner.ocr_functions import get_menu
 from threading import Thread
 
 

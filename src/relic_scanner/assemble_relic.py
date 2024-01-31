@@ -2,9 +2,9 @@ import json
 import os
 import datetime
 
-import ocr_functions
-import whitelist_check
-import clean_extracted_information
+import src.relic_scanner.ocr_functions as ocr_functions
+import src.relic_scanner.whitelist_check as whitelist_check
+import src.relic_scanner.clean_extracted_information as clean_extracted_information
 import time
 import re
 

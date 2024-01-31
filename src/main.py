@@ -1,5 +1,5 @@
 import app
-from src.relic_scanner.controls import start_scan_loop_thread
+from relic_scanner.controls import start_scan_loop_thread
 
 
 def testerer():
