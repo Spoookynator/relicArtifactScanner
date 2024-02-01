@@ -5,7 +5,6 @@ import datetime
 import src.relic_scanner.ocr_functions as ocr_functions
 import src.relic_scanner.whitelist_check as whitelist_check
 import src.relic_scanner.clean_extracted_information as clean_extracted_information
-import time
 import re
 
 
@@ -126,7 +125,6 @@ def to_snake_case(input_string):
 
 def write_relics_to_file(relics_list, directory, msg_status):
     try:
-        start = time.time()
         relics_list_json = json.dumps(relics_list, indent=4)
 
         current_datetime = datetime.datetime.now()
@@ -138,7 +136,6 @@ def write_relics_to_file(relics_list, directory, msg_status):
 
         with open(path, "w") as f:
             f.write(relics_list_json)
-        end = time.time()
 
         msg_status.set(f'Saved {len(relics_list)} relics to\n "{path}"')
     except Exception as e:

@@ -19,25 +19,25 @@ def start_scan_loop_thread(App):
 
 
 def scan_loop(App):
-    App.scanner_frame.main_interaction_container.start_scan_button.configure(state='disabled')
+    App.f_scanner.f_interaction.btn_start_scan.configure(state='disabled')
     camera = dxcam.create()
 
-    msg_status = App.scanner_frame.main_interaction_container.stats_container.current_status.status_text
-    msg_relic_count = App.scanner_frame.main_interaction_container.stats_container.scanned_relics_label.status_text
-    msg_success_rate = App.scanner_frame.main_interaction_container.stats_container.scanned_relics_success_rate.status_text
-    msg_time_elapsed = App.scanner_frame.main_interaction_container.stats_container.scanned_relics_time_elapsed.status_text
+    msg_status = App.f_scanner.f_interaction.f_stats.f_current_status.var_status_text
+    msg_relic_count = App.f_scanner.f_interaction.f_stats.f_scanned_relics.var_status_text
+    msg_success_rate = App.f_scanner.f_interaction.f_stats.f_success_rate.var_status_text
+    msg_time_elapsed = App.f_scanner.f_interaction.f_stats.f_time_elapsed.var_status_text
 
     current_menu = get_menu(screenshot.capure_screenshot(camera, App.user_config, 'menu_area'))
     if current_menu != "Relics":
         msg_status.set('Error: Please navigate to the relic Screen')
-        App.scanner_frame.main_interaction_container.start_scan_button.configure(state='default')
+        App.f_scanner.f_interaction.btn_start_scan.configure(state='default')
 
         return
     msg_status.set('Initializing Gamepad...')
     gamepad = init_gamepad()
     if not gamepad:
         msg_status.set('Error: Gamepad couldnt be initalized')
-        App.scanner_frame.main_interaction_container.start_scan_button.configure(state='default')
+        App.f_scanner.f_interaction.btn_start_scan.configure(state='default')
 
     msg_status.set('Done!')
     time.sleep(0.1)
@@ -140,7 +140,7 @@ def scan_loop(App):
     directory = App.user_config["GENERAL"]["relic_output_dir"]
 
     assemble_relic.write_relics_to_file(relics_list, directory, msg_status)
-    App.scanner_frame.main_interaction_container.start_scan_button.configure(state='default')
+    App.f_scanner.f_interaction.btn_start_scan.configure(state='default')
 
 
 def init_gamepad():
