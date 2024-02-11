@@ -27,6 +27,13 @@ def initalize_config_values():
         'main_screen_height': screen_height,
     }
 
+    config['Appearance'] = {
+        'text': '#f4eeee',
+        'background': '#242424',
+        'primary': '#c9adad',
+        'secondary': '#436066',
+        'accent': '#877da9'
+    }
     config['Tesseract'] = {
         'relic_sub_stat_num': '--psm 6',
         'relic_sub_stat_name': '--psm 12',

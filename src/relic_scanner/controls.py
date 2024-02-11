@@ -18,6 +18,7 @@ def start_scan_loop_thread(App):
     t.start()
 
 
+
 def scan_loop(App):
     App.f_scanner.f_interaction.btn_start_scan.configure(state='disabled')
     camera = dxcam.create()
@@ -46,6 +47,8 @@ def scan_loop(App):
     time.sleep(1)
 
     i = 3
+
+
     while i >= 0:
         msg_status.set(f'Starting in {i}')
         time.sleep(1)
@@ -76,13 +79,15 @@ def scan_loop(App):
     msg_success_rate.set(
         f'{round((relics_without_error / index), 4) * 100}%')
 
-    start_time = time.perf_counter()
+    start_time = time.time()
+
+    times = []
 
     while consecutive_count < consecutive_threshold and index < SCAN_LIMIT:
         if keyboard.is_pressed("F1"):
             print("Exiting scan")
             break
-
+        relic_time = time.time()
         index += 1
         msg_status.set('Switching Relic...')
         goto_next_relic(gamepad)
@@ -105,7 +110,9 @@ def scan_loop(App):
         if not errors_found:
             relics_without_error += 1
 
-        current_time = time.perf_counter()
+        current_time = time.time()
+
+        times.append(current_time - relic_time)
 
         # Display current relic
         msg_relic_count.set(f'{index}')
@@ -123,17 +130,22 @@ def scan_loop(App):
         current_screenshot = new_screenshot
 
     del gamepad
+
+    msg_relic_count.set(f'{index}')
+
     if consecutive_count == consecutive_threshold:
         msg_status.set('Scan Sucessful')
         for i in range(consecutive_threshold - 1):
             relics_list.pop()
             relics_without_error -= 1
             index -= 1
+        msg_relic_count.set(f'{index - consecutive_threshold}')
 
     else:
         msg_status.set(f"Limit of {SCAN_LIMIT} reached. Stopping scan.")
 
-    msg_relic_count.set(f'{index - consecutive_threshold}')
+    print(f'Average completion time: {sum(times) / len(times) }')
+
     end_time = time.perf_counter()
 
     msg_time_elapsed.set(f'{round(end_time - start_time, 2)}s')

@@ -1,7 +1,7 @@
 import pytesseract
 
 
-def relic_img_to_string(input_img, bounding_box, tesseract_config='', tesseract_config_2='', double_check=False):
+def img_to_string(input_img, bounding_box, tesseract_config='', tesseract_config_2='', double_check=False):
     height, width, channels = input_img.shape
     x, y, w, h = get_box_values(width, height, bounding_box)
 
@@ -28,19 +28,3 @@ def get_box_values(width, height, bounding_box):
 def get_menu(INPUT_IMAGE):
     img_string = pytesseract.image_to_string(INPUT_IMAGE)
     return img_string.strip()
-
-
-def read_config_file(file_path):
-    config_data = {}
-
-    try:
-        with open(file_path, 'r') as file:
-            for line in file:
-                key, value = line.strip().split()
-                config_data[key] = float(value)
-    except FileNotFoundError:
-        print(f"File not found: {file_path}")
-    except ValueError:
-        print(f"Error parsing file. Ensure each line has the format 'key value': {file_path}")
-
-    return config_data

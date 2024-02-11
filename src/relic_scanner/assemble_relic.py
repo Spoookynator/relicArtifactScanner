@@ -7,7 +7,6 @@ import src.relic_scanner.whitelist_check as whitelist_check
 import src.relic_scanner.clean_extracted_information as clean_extracted_information
 import re
 
-
 def convert_img_to_relic(INPUT_IMAGE, APP_CONFIG):
     # is true when there is no error
     error_list = [None] * 9
@@ -20,6 +19,7 @@ def convert_img_to_relic(INPUT_IMAGE, APP_CONFIG):
 
     # uses ocr on the image, to get all the differenct relic parts into variables
     # bounding boxes are used to only analyze a certain part of the image
+
     relic_sub_stat_num_config = APP_CONFIG['Bounding Boxes']["sub_stat_numbers"]
     relic_sub_stat_name_config = APP_CONFIG['Bounding Boxes']["sub_stat_names"]
     relic_main_stat_name_config = APP_CONFIG['Bounding Boxes']["relic_main_stat_name"]
@@ -35,22 +35,22 @@ def convert_img_to_relic(INPUT_IMAGE, APP_CONFIG):
     relic_set_name_tesseract = APP_CONFIG['Tesseract']['relic_set_name']
     relic_slot_name_tesseract = APP_CONFIG['Tesseract']['relic_slot_name']
 
-    raw_sub_stat_numbers = ocr_functions.relic_img_to_string(INPUT_IMAGE,
-                                                             relic_sub_stat_num_config,
-                                                             relic_sub_stat_num_tesseract)
-    raw_sub_stat_names = ocr_functions.relic_img_to_string(INPUT_IMAGE,
-                                                           relic_sub_stat_name_config,
-                                                           relic_sub_stat_name_tesseract
-                                                           )
-    raw_main_stat_name = ocr_functions.relic_img_to_string(INPUT_IMAGE,
-                                                           relic_main_stat_name_config,
-                                                           relic_main_stat_name_1_tesseract,
-                                                           relic_main_stat_name_2_tesseract,
-                                                           True
-                                                           )
-    raw_set_name = ocr_functions.relic_img_to_string(INPUT_IMAGE, relic_set_name_config, relic_set_name_tesseract)
-    raw_slot_name = ocr_functions.relic_img_to_string(INPUT_IMAGE, relic_slot_name_config, relic_slot_name_tesseract)
-    raw_level = ocr_functions.relic_img_to_string(INPUT_IMAGE, relic_level_config, relic_level_tesseract)
+    raw_sub_stat_numbers = ocr_functions.img_to_string(INPUT_IMAGE,
+                                                       relic_sub_stat_num_config,
+                                                       relic_sub_stat_num_tesseract)
+    raw_sub_stat_names = ocr_functions.img_to_string(INPUT_IMAGE,
+                                                     relic_sub_stat_name_config,
+                                                     relic_sub_stat_name_tesseract
+                                                     )
+    raw_main_stat_name = ocr_functions.img_to_string(INPUT_IMAGE,
+                                                     relic_main_stat_name_config,
+                                                     relic_main_stat_name_1_tesseract,
+                                                     relic_main_stat_name_2_tesseract,
+                                                     True
+                                                     )
+    raw_set_name = ocr_functions.img_to_string(INPUT_IMAGE, relic_set_name_config, relic_set_name_tesseract)
+    raw_slot_name = ocr_functions.img_to_string(INPUT_IMAGE, relic_slot_name_config, relic_slot_name_tesseract)
+    raw_level = ocr_functions.img_to_string(INPUT_IMAGE, relic_level_config, relic_level_tesseract)
 
     slot_name, error_list[0] = whitelist_check.filter_slot_names(raw_slot_name,
                                                                  WHITELIST_SLOT)

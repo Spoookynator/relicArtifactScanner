@@ -1,6 +1,7 @@
 import customtkinter
 import configobj
 
+from src.gui.gui import Tab
 from src.relic_scanner.gui import ScanPage
 
 
@@ -10,7 +11,7 @@ class App(customtkinter.CTk):
         super().__init__()
 
         # set appearance
-        customtkinter.set_appearance_mode('System')
+        customtkinter.set_appearance_mode('dark')
         customtkinter.set_default_color_theme('blue')
 
         # set screen resolution
@@ -28,9 +29,11 @@ class App(customtkinter.CTk):
 
         self.grid_rowconfigure(0, weight=1)  # configure grid system
         self.grid_columnconfigure(0, weight=1)
-        # add frame
-        self.f_scanner = ScanPage(master=self, fg_color='transparent')
-        self.f_scanner.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
+        # self.f_scanner = ScanPage(master=self, fg_color='transparent')
+        # self.f_scanner.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
+
+        self.f_general_gui = Tab(master=self, user_config=self.user_config, fg_color='transparent')
+        self.f_general_gui.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
 
     def reload_user_config(self):
         self.user_config = configobj.ConfigObj('config.ini')
