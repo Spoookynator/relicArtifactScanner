@@ -18,7 +18,6 @@ def start_scan_loop_thread(App):
     t.start()
 
 
-
 def scan_loop(App):
     App.f_scanner.f_interaction.btn_start_scan.configure(state='disabled')
     camera = dxcam.create()
@@ -28,7 +27,7 @@ def scan_loop(App):
     msg_success_rate = App.f_scanner.f_interaction.f_stats.f_success_rate.var_status_text
     msg_time_elapsed = App.f_scanner.f_interaction.f_stats.f_time_elapsed.var_status_text
 
-    current_menu = get_menu(screenshot.capure_screenshot(camera, App.user_config, 'menu_area'))
+    current_menu = get_menu(screenshot.capure_screenshot(camera, App.UserConfig, 'menu_area'))
     if current_menu != "Relics":
         msg_status.set('Error: Please navigate to the relic Screen')
         App.f_scanner.f_interaction.btn_start_scan.configure(state='default')
@@ -55,20 +54,20 @@ def scan_loop(App):
         i -= 1
 
     # Set the threshold for consecutive identical screenshots
-    consecutive_threshold = App.user_config["GENERAL"].as_int("consecutive_threshold")
-    SCAN_LIMIT = App.user_config["GENERAL"].as_int("scan_limit")
+    consecutive_threshold = App.UserConfig["GENERAL"].as_int("consecutive_threshold")
+    SCAN_LIMIT = App.UserConfig["GENERAL"].as_int("scan_limit")
     index = 1
     consecutive_count = 1  # Counter for consecutive identical screenshots
     relics_without_error = 0
 
     msg_status.set('Taking Screenshot...')
 
-    current_screenshot = screenshot.capure_screenshot(camera, App.user_config, 'relic_area')
+    current_screenshot = screenshot.capure_screenshot(camera, App.UserConfig, 'relic_area')
 
     relics_list = []
 
     msg_status.set('Extract Data...')
-    starting_relic, errors_found = assemble_relic.convert_img_to_relic(current_screenshot, App.user_config)
+    starting_relic, errors_found = assemble_relic.convert_img_to_relic(current_screenshot, App.UserConfig)
     relics_list.append(starting_relic)
 
     if not errors_found:
@@ -93,7 +92,7 @@ def scan_loop(App):
         goto_next_relic(gamepad)
 
         msg_status.set('Taking Screenshot...')
-        new_screenshot = screenshot.capure_screenshot(camera, App.user_config, 'relic_area')
+        new_screenshot = screenshot.capure_screenshot(camera, App.UserConfig, 'relic_area')
 
         if new_screenshot is None:
             new_screenshot = current_screenshot
@@ -104,7 +103,7 @@ def scan_loop(App):
             consecutive_count = 1
 
         msg_status.set('Extract Data...')
-        loop_relic, errors_found = assemble_relic.convert_img_to_relic(new_screenshot, App.user_config)
+        loop_relic, errors_found = assemble_relic.convert_img_to_relic(new_screenshot, App.UserConfig)
         relics_list.append(loop_relic)
 
         if not errors_found:
@@ -149,7 +148,7 @@ def scan_loop(App):
     end_time = time.perf_counter()
 
     msg_time_elapsed.set(f'{round(end_time - start_time, 2)}s')
-    directory = App.user_config["GENERAL"]["relic_output_dir"]
+    directory = App.UserConfig["GENERAL"]["relic_output_dir"]
 
     assemble_relic.write_relics_to_file(relics_list, directory, msg_status)
     App.f_scanner.f_interaction.btn_start_scan.configure(state='default')

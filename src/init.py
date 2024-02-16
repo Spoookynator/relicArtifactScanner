@@ -52,8 +52,8 @@ def initalize_config_values():
         'relic_main_stat_name': {'left': 0.11, 'top': 0.53, 'width': 0.6, 'height': 0.07},
         'relic_slot': {'left': 0.05, 'top': 0.3, 'width': 0.4, 'height': 0.07},
         'relic_level': {'left': 0.07, 'top': 0.38, 'width': 0.2, 'height': 0.07},
-        'relic_area': {'left': 0.72, 'top': 0.1, 'right': 0.98, 'bottom': 0.6},
-        'menu_area': {'left': 0.05, 'top': 0.06, 'right': 0.15, 'bottom': 0.1},
+        'relic_area': {'left': 0.72, 'top': 0.1, 'width': 0.98, 'height': 0.6},
+        'menu_area': {'left': 0.05, 'top': 0.06, 'width': 0.15, 'height': 0.1},
     }
 
     config['Whitelist'] = {

@@ -1,13 +1,14 @@
 import customtkinter
 import configobj
 
-from src.gui.gui import Tab
+from src.gui.box_editor_gui import BoxEditorGui
 from src.relic_scanner.gui import ScanPage
 
 
 class App(customtkinter.CTk):
     def __init__(self):
-        self.user_config = configobj.ConfigObj('config.ini')
+        self.UserConfig = configobj.ConfigObj('config.ini')
+
         super().__init__()
 
         # set appearance
@@ -16,10 +17,10 @@ class App(customtkinter.CTk):
 
         # set screen resolution
         window_width = round(
-            self.user_config['GENERAL'].as_int('main_screen_width') * self.user_config['GENERAL'].as_float(
+            self.UserConfig['GENERAL'].as_int('main_screen_width') * self.UserConfig['GENERAL'].as_float(
                 'app_window_scale'))
         window_height = round(
-            self.user_config['GENERAL'].as_int('main_screen_height') * self.user_config['GENERAL'].as_float(
+            self.UserConfig['GENERAL'].as_int('main_screen_height') * self.UserConfig['GENERAL'].as_float(
                 'app_window_scale'))
         screen_resolution = f'{window_width}x{window_height}'
         self.geometry(screen_resolution)
@@ -32,8 +33,5 @@ class App(customtkinter.CTk):
         # self.f_scanner = ScanPage(master=self, fg_color='transparent')
         # self.f_scanner.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
 
-        self.f_general_gui = Tab(master=self, user_config=self.user_config, fg_color='transparent')
-        self.f_general_gui.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
-
-    def reload_user_config(self):
-        self.user_config = configobj.ConfigObj('config.ini')
+        self.f_box_editor = BoxEditorGui(master=self, user_config=self.UserConfig, fg_color='transparent')
+        self.f_box_editor.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
