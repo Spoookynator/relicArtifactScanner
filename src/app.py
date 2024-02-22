@@ -30,8 +30,8 @@ class App(customtkinter.CTk):
 
         self.grid_rowconfigure(0, weight=1)  # configure grid system
         self.grid_columnconfigure(0, weight=1)
-        # self.f_scanner = ScanPage(master=self, fg_color='transparent')
-        # self.f_scanner.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
+        self.f_scanner = ScanPage(master=self, fg_color='transparent')
+        self.f_scanner.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
 
-        self.f_box_editor = BoxEditorGui(master=self, user_config=self.UserConfig, fg_color='transparent')
-        self.f_box_editor.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')
+        # self.f_box_editor = BoxEditorGui(master=self, user_config=self.UserConfig, fg_color='transparent')
+        # self.f_box_editor.grid(row=0, column=0, padx=5, pady=5, sticky='nsew')

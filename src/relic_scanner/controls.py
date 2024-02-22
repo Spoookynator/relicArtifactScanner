@@ -1,3 +1,4 @@
+import logging
 import math
 
 import numpy as np
@@ -47,7 +48,6 @@ def scan_loop(App):
 
     i = 3
 
-
     while i >= 0:
         msg_status.set(f'Starting in {i}')
         time.sleep(1)
@@ -67,11 +67,12 @@ def scan_loop(App):
     relics_list = []
 
     msg_status.set('Extract Data...')
-    starting_relic, errors_found = assemble_relic.convert_img_to_relic(current_screenshot, App.UserConfig)
-    relics_list.append(starting_relic)
-
-    if not errors_found:
+    try:
+        starting_relic = assemble_relic.img_to_relic(current_screenshot, App.UserConfig, index)
+        relics_list.append(starting_relic)
         relics_without_error += 1
+    except Exception as e:
+        logging.error(e)
 
     # Display current relic
     msg_relic_count.set(f'{index}')
@@ -103,11 +104,12 @@ def scan_loop(App):
             consecutive_count = 1
 
         msg_status.set('Extract Data...')
-        loop_relic, errors_found = assemble_relic.convert_img_to_relic(new_screenshot, App.UserConfig)
-        relics_list.append(loop_relic)
-
-        if not errors_found:
+        try:
+            loop_relic = assemble_relic.img_to_relic(new_screenshot, App.UserConfig, index)
+            relics_list.append(loop_relic)
             relics_without_error += 1
+        except Exception as e:
+            logging.error(e)
 
         current_time = time.time()
 
