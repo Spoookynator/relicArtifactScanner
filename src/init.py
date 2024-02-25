@@ -76,7 +76,8 @@ def initalize_config_values():
             'Passerby of Wandering Cloud', 'Penacony Land of the Dreams', 'Penacony, Land of the Dreams',
             'Prisoner in Deep Confinement', 'Rutilant Arena', 'Space Sealing Station', 'Sprightly Vonwacq',
             'Talia Kingdom of Banditry', 'Talia: Kingdom of Banditry', 'The Ashblazing Grand Duke',
-            'Thief of Shooting Meteor', 'Wastelander of Banditry Desert', 'TEST LINE DO NOT REMOVE EVERYTHING BREAKS'
+            'Thief of Shooting Meteor', 'Wastelander of Banditry Desert', 'Watchmaker, Master of Dream',
+            'Pioneer Dive of Dead Waters', 'TEST LINE DO NOT REMOVE EVERYTHING BREAKS'
         ],
         'slots': [
             'Body', 'Feet', 'Hands', 'Head', 'Rope', 'Sphere'

@@ -1,3 +1,5 @@
+import logging
+
 import pytesseract
 
 
@@ -12,6 +14,7 @@ def img_to_string(input_img, bounding_box, tesseract_config='', tesseract_config
         img_string2 = pytesseract.image_to_string(crop_img, config=tesseract_config_2)
         return img_string2 + img_string
 
+    logging.debug(f'Converted img to string"')
     return img_string
 
 

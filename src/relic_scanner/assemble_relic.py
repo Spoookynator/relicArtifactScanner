@@ -15,6 +15,7 @@ def img_to_relic(INPUT_IMAGE, APP_CONFIG, INDEX):
     BOUNDING_BOXES_CNF = APP_CONFIG['Bounding Boxes']
     TESSERACT_CNF = APP_CONFIG['Tesseract']
 
+    logging.debug("Starting OCR relic to text conversion")
     raw_sub_stat_numbers = ocr_functions.img_to_string(
         input_img=INPUT_IMAGE,
         bounding_box=BOUNDING_BOXES_CNF['sub_stat_numbers'],
@@ -46,6 +47,7 @@ def img_to_relic(INPUT_IMAGE, APP_CONFIG, INDEX):
         input_img=INPUT_IMAGE,
         bounding_box=BOUNDING_BOXES_CNF['relic_level'],
         tesseract_config=TESSERACT_CNF['relic_level'])
+
 
     try:
         slot_name = whitelist_check.filter_slot_names(raw_slot_name, WHITELIST_CNF['slots'])
@@ -85,6 +87,7 @@ def img_to_relic(INPUT_IMAGE, APP_CONFIG, INDEX):
             set_name=to_snake_case(set_name)
         )
 
+        logging.debug(f'Converted Relic: {relic.__dict__}')
         return relic
     except Exception as e:
         logging.error(e)
@@ -104,7 +107,7 @@ def to_snake_case(input_string):
     return lower_string
 
 
-def write_relics_to_file(relics_list, directory, msg_status):
+def write_relics_to_file(relics_list, directory, App):
     try:
         relic_dicts = [relic.to_dict() for relic in relics_list]
         current_datetime = datetime.datetime.now()
@@ -117,7 +120,8 @@ def write_relics_to_file(relics_list, directory, msg_status):
         with open(path, "w") as f:
             json.dump(relic_dicts, f, indent=4)
 
-        msg_status.set(f'Saved {len(relics_list)} relics to\n "{path}"')
+        App.f_scanner.set_status_msg(f'Saved {len(relics_list)} relics to\n "{path}"')
     except Exception as e:
-        msg_status.set("Failed to write relics to file.")
-        print(f"Error: {format(e)}")
+        App.f_scanner.set_status_msg("Failed to write relics to file.")
+        logging.warning(f"Error: {format(e)}")
+        raise e

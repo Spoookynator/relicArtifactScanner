@@ -1,26 +1,26 @@
+import logging
+
 from PIL import Image
 
 import src.base_classes.gui
 import customtkinter
-import dxcam
 
 from src.relic_scanner import screenshot
 from src.relic_scanner.ocr_functions import get_box_values
 
 
 class BoxEditorGui(src.base_classes.gui.Tab):
-    def __init__(self, master, user_config, **kwargs):
+    def __init__(self, master, user_config, camera, **kwargs):
+        self.camera = camera
         super().__init__(master, user_config, **kwargs)
-
-        self.f_nav_bar.set_current_tab(2)
-        self.f_main_interaction = MainFrame(master=self, user_config=user_config)
+        self.f_main_interaction = MainFrame(master=self, user_config=user_config, camera=self.camera)
         self.f_main_interaction.grid(row=0, column=1, sticky='nsew')
 
 
 class MainFrame(customtkinter.CTkScrollableFrame):
-    def __init__(self, master, user_config, **kwargs):
+    def __init__(self, master, user_config, camera, **kwargs):
         super().__init__(master, **kwargs)
-        self.camera = dxcam.create()
+        self.camera = camera
         self.user_config = user_config
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
@@ -49,8 +49,9 @@ class MainFrame(customtkinter.CTkScrollableFrame):
                 current_column = 0
 
             area.grid(column=current_column, row=current_row)
-
+            area.display_screenshot()
             current_column += 1
+        logging.debug(f'Created {len(areas_array)} screenshot areas')
 
 
 def callback(P):
@@ -91,7 +92,7 @@ class BoxContainer(customtkinter.CTkFrame):
 
         self.i_screenshot = customtkinter.CTkImage(dark_image=Image.fromarray(self.v_screenshot),
                                                    size=(self.v_screenshot_height, self.v_screenshot_width))
-  
+
         self.l_screenshot = None
 
         self.e_left = EntryContainer(self, user_config=user_config, area=area, label_text='left',
@@ -110,7 +111,7 @@ class BoxContainer(customtkinter.CTkFrame):
     def display_screenshot(self):
         self.l_screenshot = customtkinter.CTkLabel(self, image=self.i_screenshot, text='')
         self.l_screenshot.grid(columnspan=2, column=0, row=1)
-
+        logging.debug('Displayed screesnshot')
 
 
 class EntryContainer(customtkinter.CTkFrame):

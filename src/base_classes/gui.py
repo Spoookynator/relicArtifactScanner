@@ -12,9 +12,6 @@ class Tab(customtkinter.CTkFrame):
 
         self.user_config = user_config
 
-        self.f_nav_bar = NavBar(self, fg_color=self.user_config['Appearance']['secondary'], width=30, user_config=self.user_config)
-        self.f_nav_bar.grid(row=0, column=0, sticky='nsw')
-
 
 class NavBar(customtkinter.CTkFrame):
     def __init__(self, master, user_config, **kwargs):

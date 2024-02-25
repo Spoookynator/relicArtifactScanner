@@ -1,3 +1,4 @@
+import logging
 import re
 
 
@@ -18,6 +19,7 @@ def clean_sub_stat_numbers(sub_stat_numbers_string):
                 else:
                     numbers_string_list[i] = int(numbers_string_list[i])
 
+        logging.debug(f'Cleaned string to: {numbers_string_list}')
         return numbers_string_list
     except Exception as e:
         raise e
