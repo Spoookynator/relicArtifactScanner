@@ -6,6 +6,7 @@ import dxcam
 
 from src.base_classes.gui import NavBar
 from src.gui.box_editor_gui import BoxEditorGui
+from src.gui.inventory_gui import InventoryGui
 from src.gui.relic_scanner_gui import RelicScannerGui
 from src.relic_scanner.controls import start_scan_loop_thread
 
@@ -52,13 +53,17 @@ class App(customtkinter.CTk):
         self.f_scanner = RelicScannerGui(master=self, user_config=self.UserConfig, fg_color='transparent')
         self.f_scanner.grid(row=0, column=1, sticky='nsew')
 
-        self.set_frame(1)
+        self.f_inventory = InventoryGui(master=self, user_config=self.UserConfig, fg_color='transparent')
+        self.f_inventory.grid(row=0, column=1, sticky='nsew')
+
+        self.set_frame(0)
         self.f_scanner.f_main_interaction.btn_start_scan.configure(command=lambda: start_scan_loop_thread(self))
 
     def set_frame(self, index: int):
         match index:
             case 0:
                 self.f_nav_bar.set_current_tab(0)
+                self.f_inventory.tkraise()
                 logging.debug("switched to inventory")
 
             case 1:

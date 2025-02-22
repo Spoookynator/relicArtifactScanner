@@ -25,11 +25,11 @@ class RelicScannerGui(src.base_classes.gui.Tab):
 
     def enable_scan_button(self):
         self.f_main_interaction.btn_start_scan.configure(self, state='normal')
-        logging.debug('Disabled scan button')
+        logging.debug('Enabled scan button')
 
     def disable_scan_button(self):
         self.f_main_interaction.btn_start_scan.configure(self, state='disabled')
-        logging.debug('Enabled scan button')
+        logging.debug('Disabled scan button')
 
 
 class MainFrame(customtkinter.CTkFrame):
@@ -45,7 +45,7 @@ class MainFrame(customtkinter.CTkFrame):
         self.f_stats = StatsContainer(self, fg_color="transparent")
         self.f_stats.grid(column=0, row=0, sticky='nsew', columnspan=3)
 
-        self.btn_start_scan = customtkinter.CTkButton(self, text='Scan Relics', font=('', 50), corner_radius=10)
+        self.btn_start_scan = customtkinter.CTkButton(self, text='Scan Relics', font=('', 50), corner_radius=10, fg_color=user_config['Appearance']['primary'], hover_color=user_config['Appearance']['accent'])
         self.btn_start_scan.grid(row=1, column=1, sticky='nsew')
         self.btn_start_scan.grid_propagate(False)
 
