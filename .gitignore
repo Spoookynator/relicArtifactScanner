@@ -13,3 +13,6 @@ gen
 /dist
 /boxes
 /relics
+
+# files
+/src/config.ini

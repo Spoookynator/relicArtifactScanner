@@ -1,6 +1,5 @@
 # TODO: Pan-Cosmic Commercial Enterprise isnt getting recognized
 def check_set_name(ocr_raw_text, whitelist_set_names):
-
     is_found = False
     found_name = ""
     for line in whitelist_set_names:
@@ -8,16 +7,14 @@ def check_set_name(ocr_raw_text, whitelist_set_names):
             is_found = True
             found_name = line
     if is_found:
-        return found_name, True
+        return found_name
     else:
-        return None, "Error: Set name not found"
+        raise Exception("Set name not found")
 
 
 # chatgpt, splits the raw input by new line, and then compares the lower version to the control array lower version
 # returns list of substat names
-# TODO: Wasterlander set sub stats aren`t recognized for some reason, pan-cosmic as well
 def filter_sub_stat_names(ocr_raw_text, whitelist_sub_stat_names):
-
     sub_stats = ocr_raw_text.split("\n")
     sub_stats = list(filter(None, sub_stats))
 
@@ -27,14 +24,13 @@ def filter_sub_stat_names(ocr_raw_text, whitelist_sub_stat_names):
 
     # Check if there are any allowed words
     if not filtered_words:
-        return [None], "Filtered words not found"
+        raise Exception("Filtered words not found")
 
-    return filtered_words, True
+    return filtered_words
 
 
 # this basically cleans out any trash chars as well, since the stat is getting copied from the whitelist
 def check_main_stat_name(ocr_raw_text, whitelist_main_stats, whitelist_possible_percent_in_name, slot_name):
-
     is_found = False
     found_name = ""
     for line in whitelist_main_stats:
@@ -46,9 +42,9 @@ def check_main_stat_name(ocr_raw_text, whitelist_main_stats, whitelist_possible_
 
         if found_name in whitelist_possible_percent_in_name and not slot_name.lower() in ["head", "hands"]:
             found_name += "%"
-        return found_name, True
+        return found_name
     else:
-        return None, "Error: Main stat name not found"
+        raise Exception("Main stat name not found")
 
 
 def filter_slot_names(ocr_raw_text, whitelist_slots):
@@ -60,6 +56,6 @@ def filter_slot_names(ocr_raw_text, whitelist_slots):
             found_name = line
 
     if is_found:
-        return found_name, True
+        return found_name
     else:
-        return None, "Error: Slot name not found"
+        raise Exception("Slot name not found")

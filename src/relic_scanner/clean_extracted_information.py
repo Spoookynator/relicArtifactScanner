@@ -1,3 +1,4 @@
+import logging
 import re
 
 
@@ -18,38 +19,38 @@ def clean_sub_stat_numbers(sub_stat_numbers_string):
                 else:
                     numbers_string_list[i] = int(numbers_string_list[i])
 
-        return numbers_string_list, True
+        logging.debug(f'Cleaned string to: {numbers_string_list}')
+        return numbers_string_list
     except Exception as e:
-        return [None], e
+        raise e
 
 
 def sub_stats_flat_or_percent(sub_stat_name_list, sub_stat_numbers_list, WHITELIST):
     if not len(sub_stat_name_list) == len(sub_stat_numbers_list):
-        return {"names": None, "values": None}, "Lists arent the same"
+        raise Exception("Lists arent the same")
 
-    errors = [True] * (len(sub_stat_name_list) + 1)
-    for i in range(len(sub_stat_name_list)):
-        sub_stat_name_list[i], errors[i] = stat_flat_or_percent(sub_stat_name_list[i], sub_stat_numbers_list[i], WHITELIST)
+    try:
+        for i in range(len(sub_stat_name_list)):
+            sub_stat_name_list[i] = stat_flat_or_percent(sub_stat_name_list[i], sub_stat_numbers_list[i], WHITELIST)
+    except Exception as e:
+        raise e
 
-    for error in errors:
-        if error != True:
-            return {"names": sub_stat_name_list, "values": sub_stat_numbers_list}, "Error with stat_flat_or_percent"
-
-    return {"names": sub_stat_name_list, "values": sub_stat_numbers_list}, True
+    sub_stats = {"names": sub_stat_name_list, "values": sub_stat_numbers_list}
+    return sub_stats
 
 
 def stat_flat_or_percent(stat_name, stat_value, WHITELIST):
     try:
         if stat_value < 1 and stat_name in WHITELIST:
             stat_name += "%"
-        return stat_name, True
+        return stat_name
     except TypeError as e:
-        return None, e
+        raise e
 
 
 def clean_level(raw_ocr_level):
     try:
         cleaned_level = raw_ocr_level.replace("+", "").rstrip()
-        return int(cleaned_level), True
+        return int(cleaned_level)
     except Exception as e:
-        return None, e
+        raise e
